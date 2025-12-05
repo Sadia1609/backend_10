@@ -29,7 +29,8 @@ async function run() {
 
 
     //database create
-    
+    const database = client.db('petService');
+    const petServices = database.collection('services')
 
 
 
@@ -37,6 +38,9 @@ async function run() {
     app.post('/services', async (req, res)=>{
         const data = req.body;
         console.log(data);
+
+        const result = await petServices.insertOne(data);
+        res.send(result)
     })
 
 
