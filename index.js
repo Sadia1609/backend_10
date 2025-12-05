@@ -34,13 +34,24 @@ async function run() {
 
 
 
-
+//post or save service to database
     app.post('/services', async (req, res)=>{
         const data = req.body;
-        console.log(data);
+        const date = new Date();
+        data.createDate = date;
 
-        const result = await petServices.insertOne(data);
+         console.log(data);
+        
+         const result = await petServices.insertOne(data);
         res.send(result)
+    })
+
+    //get services from database
+    app.get('/services', async (req, res)=>{
+
+        const result = await petServices.find().toArray();
+        res.send(result)
+
     })
 
 
