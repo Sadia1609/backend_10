@@ -49,7 +49,17 @@ async function run() {
     //get services from database
     app.get('/services', async (req, res)=>{
 
-        const result = await petServices.find().toArray();
+
+      //choose category
+      const {category} = req.query;
+      const query = {}
+      if (category){
+        query.category = category
+       
+
+      }
+
+        const result = await petServices.find(query).toArray();
         res.send(result)
 
     })
