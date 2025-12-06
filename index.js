@@ -66,6 +66,14 @@ async function run() {
     })
 
 
+    //add api
+    app.get('/my-services', async(req, res)=>{
+      const {email} = req.query
+      const query = {email: email}
+      const result = await petServices.find(query).toArray()
+      res.send(result)
+      
+    })
 
     
     await client.db("admin").command({ ping: 1 });
