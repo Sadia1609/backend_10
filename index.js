@@ -1,3 +1,4 @@
+
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
@@ -47,6 +48,22 @@ async function run() {
          const result = await petServices.insertOne(data);
         res.send(result)
     })
+    // Get latest 6 services
+app.get('/recent-services', async (req, res) => {
+  try {
+    const result = await petServices
+      .find()
+      .sort({ createDate: -1 }) // newest first
+      .limit(6)
+      .toArray();
+
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: "Failed to load recent services" });
+  }
+});
+
 
     //get services from database
     app.get('/services', async (req, res)=>{
@@ -82,7 +99,7 @@ async function run() {
     app.get('/my-services', async(req, res)=>{
       const {email} = req.query
       const query = {email: email}
-      const result = await petServices.find(query).limit(6).toArray()
+      const result = await petServices.find(query).toArray()
       res.send(result)
       
     })
