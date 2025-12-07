@@ -40,6 +40,7 @@ async function run() {
         const data = req.body;
         const date = new Date();
         data.createDate = date;
+      
 
          console.log(data);
         
@@ -81,7 +82,7 @@ async function run() {
     app.get('/my-services', async(req, res)=>{
       const {email} = req.query
       const query = {email: email}
-      const result = await petServices.find(query).toArray()
+      const result = await petServices.find(query).limit(6).toArray()
       res.send(result)
       
     })
@@ -114,7 +115,7 @@ async function run() {
 
 
 
-    //orders collections
+    //orders collections section
     app.post('/orders', async(req, res)=>{
       const data = req.body
       console.log(data);
@@ -123,6 +124,11 @@ async function run() {
       const result = await orderCollections.insertOne(data)
       res.status(201).send(result)
       
+    })
+
+    app.get('/orders', async(req, res)=>{
+      const result = await orderCollections.find().toArray();
+      res.status(200).send(result)
     })
 
     
