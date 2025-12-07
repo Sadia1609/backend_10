@@ -53,7 +53,7 @@ app.get('/recent-services', async (req, res) => {
   try {
     const result = await petServices
       .find()
-      .sort({ createDate: -1 }) // newest first
+      .sort({ createDate: -1 }) 
       .limit(6)
       .toArray();
 
@@ -65,23 +65,25 @@ app.get('/recent-services', async (req, res) => {
 });
 
 
-    //get services from database
-    app.get('/services', async (req, res)=>{
+    // //get services from database
+
+    app.get('/services', async (req, res) => {
+  const { category, search } = req.query;
+  const query = {};
+
+  if (category) {
+    query.category = { $regex: new RegExp(`^${category}$`, 'i') };
+  }
+
+  if (search) {
+    query.name = { $regex: new RegExp(search, 'i') }; // case-insensitive search
+  }
+
+  const result = await petServices.find(query).toArray();
+  res.send(result);
+});
 
 
-      //choose category
-      const {category} = req.query;
-      const query = {}
-      if (category){
-        query.category = category
-       
-
-      }
-
-        const result = await petServices.find(query).toArray();
-        res.send(result)
-
-    })
 
     app.get('/services/:id', async(req, res)=>{
         const id = req.params
@@ -149,7 +151,7 @@ app.get('/recent-services', async (req, res) => {
     })
 
     
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
    
