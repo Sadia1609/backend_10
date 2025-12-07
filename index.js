@@ -6,7 +6,20 @@ require('dotenv').config();
 const port = 3000;
 
 const app = express();
-app.use(cors());
+// app.use(cors(
+//   {
+//     origin: [
+//       "http://localhost:3000",
+//       "https://fluffy-kitsune-1aa129.netlify.app/"
+//     ]
+//   }
+// ));
+
+app.use(cors({
+  origin: ["https://pet-care-8ba14.web.app", "http://localhost:5174"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 app.use(express.json())
 
 
@@ -26,7 +39,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     
-    await client.connect();
+    // await client.connect();
 
 
     //database create for petServices
@@ -53,7 +66,7 @@ app.get('/recent-services', async (req, res) => {
   try {
     const result = await petServices
       .find()
-      .sort({ createDate: -1 }) 
+      .sort({ _id: -1 }) 
       .limit(6)
       .toArray();
 
@@ -148,6 +161,16 @@ app.get('/recent-services', async (req, res) => {
     app.get('/orders', async(req, res)=>{
       const result = await orderCollections.find().toArray();
       res.status(200).send(result)
+    })
+
+    app.get('/orders/:email', async(req, res)=>{
+      const {email} = req.params;
+      const query = {
+        buyerEmail: email
+      }
+      const result = await orderCollections.find(query).toArray();
+      res.send(result)
+      
     })
 
     
