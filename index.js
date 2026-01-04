@@ -14,19 +14,12 @@ const app = express();
 //   }
 // ));
 
-// app.use(
-//   cors({
-//     // origin: ["https://pet-care-8ba14.web.app", "http://localhost:5173"],
-//     origin: ["http://localhost:5173", "https://paw-mart-two.vercel.app"],
-
-//     methods: ["GET", "POST", "PUT", "DELETE"],
-//     credentials: true,
-//   })
-// );
-
 app.use(
   cors({
-    origin: true, // ✅ allow all origins (safe for now)
+    // origin: ["https://pet-care-8ba14.web.app", "http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://paw-mart-two.vercel.app"],
+
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -175,7 +168,6 @@ app.get("/", (req, res) => {
   res.send("hello, developers");
 });
 
-// app.listen(port, () => {
-//   console.log(`server is running on ${port}`);
-// });
-module.exports = app;
+app.listen(port, () => {
+  console.log(`server is running on ${port}`);
+});
