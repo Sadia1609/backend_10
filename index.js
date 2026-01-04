@@ -175,6 +175,7 @@ app.get("/", (req, res) => {
   res.send("hello, developers");
 });
 
-app.listen(port, () => {
-  console.log(`server is running on ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`server is running on ${port}`);
+// });
+module.exports = app;
